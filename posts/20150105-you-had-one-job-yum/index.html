@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en-au">
+
+<head>
+<meta charset="utf-8" />
+<meta name="author" content="" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.60.1" />
+
+<link rel="canonical" href="https://stacyhorton.github.io/posts/20150105-you-had-one-job-yum/">
+<meta property="og:title" content="You had one job, Yum!" />
+<meta property="og:description" content="The task: install a missing php extension (memcached) on a client&#39;s webserver.
+1 2 3 4 5 6 7 8 9 10 11 12 13  $ sudo yum install php54w-pecl-memcached Installing: php54w-pecl-memcached Installing for dependencies: libmemcached libmemcached10 Transaction check error: file /usr/bin/memcapable conflicts between attempted installs of libmemcached10-1.0.16-1.ius.el6.x86_64 and libmemcached-1.0.8-2.6.amzn1.x86_64 ... yum continues to vomit intensely ...   Hmm, okay&hellip; let&#39;s try this:
+1 2 3 4 5 6  $ sudo yum install libmemcached10 Installed: libmemcached10." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://stacyhorton.github.io/posts/20150105-you-had-one-job-yum/" />
+<meta property="article:published_time" content="2015-01-05T13:45:40+10:00" />
+<meta property="article:modified_time" content="2015-01-05T13:45:40+10:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="You had one job, Yum!"/>
+<meta name="twitter:description" content="The task: install a missing php extension (memcached) on a client&#39;s webserver.
+1 2 3 4 5 6 7 8 9 10 11 12 13  $ sudo yum install php54w-pecl-memcached Installing: php54w-pecl-memcached Installing for dependencies: libmemcached libmemcached10 Transaction check error: file /usr/bin/memcapable conflicts between attempted installs of libmemcached10-1.0.16-1.ius.el6.x86_64 and libmemcached-1.0.8-2.6.amzn1.x86_64 ... yum continues to vomit intensely ...   Hmm, okay&hellip; let&#39;s try this:
+1 2 3 4 5 6  $ sudo yum install libmemcached10 Installed: libmemcached10."/>
+
+
+<meta itemprop="name" content="You had one job, Yum!">
+<meta itemprop="description" content="The task: install a missing php extension (memcached) on a client&#39;s webserver.
+1 2 3 4 5 6 7 8 9 10 11 12 13  $ sudo yum install php54w-pecl-memcached Installing: php54w-pecl-memcached Installing for dependencies: libmemcached libmemcached10 Transaction check error: file /usr/bin/memcapable conflicts between attempted installs of libmemcached10-1.0.16-1.ius.el6.x86_64 and libmemcached-1.0.8-2.6.amzn1.x86_64 ... yum continues to vomit intensely ...   Hmm, okay&hellip; let&#39;s try this:
+1 2 3 4 5 6  $ sudo yum install libmemcached10 Installed: libmemcached10.">
+<meta itemprop="datePublished" content="2015-01-05T13:45:40&#43;10:00" />
+<meta itemprop="dateModified" content="2015-01-05T13:45:40&#43;10:00" />
+<meta itemprop="wordCount" content="173">
+
+
+
+<meta itemprop="keywords" content="fail,linux,yum," />
+
+<link rel="stylesheet" href="../../css/layout.css" />
+
+
+<link rel="stylesheet" href="../../css/default-dark.css" />
+
+
+
+
+<title>
+
+
+     You had one job, Yum! 
+
+</title>
+
+</head>
+
+
+<body>
+<div class="main">
+<header>
+
+<div class="header-bar">
+
+  <nav>
+    <div class="siteTitle">
+      <a href="https://stacyhorton.github.io/">stacyhorton.github.io</a>
+    </div> 
+
+    
+    
+
+  </nav>
+
+  
+<div class="social-links-header">
+
+  
+
+  
+  <a href="https://github.com/stacyhorton" target="_blank"><div class="social-link">gh</div></a>
+  
+
+  
+
+  
+
+  
+
+</div>
+
+
+</div>
+
+
+</header>
+
+
+<article class="post">
+    <h1 class="title"> You had one job, Yum! </h1>
+    <div class="content"> <p>The task: install a missing php extension (memcached) on a client's webserver.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">$ sudo yum install php54w-pecl-memcached
+
+Installing:
+ php54w-pecl-memcached
+
+Installing for dependencies:
+ libmemcached
+ libmemcached10
+
+Transaction check error:
+  file /usr/bin/memcapable conflicts between attempted installs of libmemcached10-1.0.16-1.ius.el6.x86_64 and libmemcached-1.0.8-2.6.amzn1.x86_64
+
+... yum continues to vomit intensely ...
+</code></pre></td></tr></table>
+</div>
+</div><p>Hmm, okay&hellip; let's try this:</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">$ sudo yum install libmemcached10
+
+Installed:
+  libmemcached10.x86_64 0:1.0.16-1.ius.el6
+
+Complete!
+</code></pre></td></tr></table>
+</div>
+</div><p>Okay, good.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">$ sudo yum install php54w-pecl-memcached
+
+Installed:
+  php54w-pecl-memcached.x86_64 0:2.2.0-2.w6
+
+Dependency Installed:
+  php54w-pecl-igbinary.x86_64 0:1.2.1-2.w6
+
+Complete!
+</code></pre></td></tr></table>
+</div>
+</div><p>&hellip;</p>
+<p><img src="../../static/images/are_you_fucking_kidding_me.gif" alt="Are you fucking kiding me?"></p>
+<p>So as long as I do the dependency resolution for you, you will install it happily.  What's your job again yum?</p>
+<p>Disclaimer: yes, there are obviously problems with that third party repo and the official one and it's not technically yum's fault but I think it's indicative of the systemic problems of the yum/rpm universe.  Plus, apt just works, reduces greenhouse emissions and saves a dolphin with every package install.  :)</p>
+ </div>
+    <footer class="post-footer">
+
+  <div class="post-footer-data">
+    
+<div class="tags">
+    
+      <div class="tag">
+        <a href="../../tags/fail">#fail</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/linux">#linux</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/yum">#yum</a>
+      </div>
+    
+</div>
+
+    <div class="date"> 5 Jan 2015 </div>
+  </div>
+
+</footer>
+
+
+
+</article>
+
+  <footer>
+
+  <div class="social-links-footer">
+
+  
+
+  
+  <a href="https://github.com/stacyhorton" target="_blank"><div class="social-link">GitHub</div></a>
+  
+
+  
+
+  
+
+  
+
+  <div class="social-link">
+  <a href="https://stacyhorton.github.io/index.xml" target="_blank">RSS</a>
+  </div>
+
+</div>
+
+
+  <div class="copyright">  </div>
+
+  <div class="poweredby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>.
+  </div>
+
+  </footer>
+
+</div> 
+
+</body>
+</html>
+

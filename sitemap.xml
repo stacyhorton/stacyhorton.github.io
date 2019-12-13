@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/aws/</loc>
+    <lastmod>2018-09-12T17:03:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/categories/</loc>
+    <lastmod>2018-09-12T17:03:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/posts/20180912-deploying-lambda-functions-with-terraform/</loc>
+    <lastmod>2018-09-12T17:03:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/categories/devops/</loc>
+    <lastmod>2018-09-12T17:03:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/lambda/</loc>
+    <lastmod>2018-09-12T17:03:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/posts/</loc>
+    <lastmod>2018-09-12T17:03:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/serverless/</loc>
+    <lastmod>2018-09-12T17:03:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/</loc>
+    <lastmod>2018-09-12T17:03:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/</loc>
+    <lastmod>2018-09-12T17:03:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/terraform/</loc>
+    <lastmod>2018-09-12T17:03:10+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/chrome/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/chrome-extensions/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/linux/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/privacy/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/categories/privacy/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/qol/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/categories/qol/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/socks5/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/ssh/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/categories/tips/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/posts/20170218-tunneling-chrome-tabs-via-ssh/</loc>
+    <lastmod>2017-02-18T16:22:05+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/acm/</loc>
+    <lastmod>2016-07-22T15:23:13+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/cloudformation/</loc>
+    <lastmod>2016-07-22T15:23:13+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/posts/20160722-cloudformation-acm-creation-hangs/</loc>
+    <lastmod>2016-07-22T15:23:13+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/troposphere/</loc>
+    <lastmod>2016-07-22T15:23:13+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/fail/</loc>
+    <lastmod>2015-01-05T13:45:40+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/posts/20150105-you-had-one-job-yum/</loc>
+    <lastmod>2015-01-05T13:45:40+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stacyhorton.github.io/tags/yum/</loc>
+    <lastmod>2015-01-05T13:45:40+10:00</lastmod>
+  </url>
+  
+</urlset>

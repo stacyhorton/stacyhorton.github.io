@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>terraform on stacyhorton.github.io</title>
+    <link>https://stacyhorton.github.io/tags/terraform/</link>
+    <description>Recent content in terraform on stacyhorton.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-au</language>
+    <lastBuildDate>Wed, 12 Sep 2018 17:03:10 +1000</lastBuildDate>
+    
+	<atom:link href="https://stacyhorton.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Deploying Lambda Functions with Terraform</title>
+      <link>https://stacyhorton.github.io/posts/20180912-deploying-lambda-functions-with-terraform/</link>
+      <pubDate>Wed, 12 Sep 2018 17:03:10 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/posts/20180912-deploying-lambda-functions-with-terraform/</guid>
+      <description>The problem: You want a controlled deployment of a single lambda function but messing around with Serverless or another framework seems like overkill, just to get the job done.
+The solution: A simple Terraform deployment.
+Assumption: You&#39;re working in Python because whoever looked at JavaScript and thought &amp;ldquo;You know, we should run that server-side&amp;rdquo;.
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120  provider &amp;#34;aws&amp;#34; { region = &amp;#34;${var.</description>
+    </item>
+    
+  </channel>
+</rss>

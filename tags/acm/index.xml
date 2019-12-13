@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>acm on stacyhorton.github.io</title>
+    <link>https://stacyhorton.github.io/tags/acm/</link>
+    <description>Recent content in acm on stacyhorton.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-au</language>
+    <lastBuildDate>Fri, 22 Jul 2016 15:23:13 +1000</lastBuildDate>
+    
+	<atom:link href="https://stacyhorton.github.io/tags/acm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cloudformation ACM creation hangs</title>
+      <link>https://stacyhorton.github.io/posts/20160722-cloudformation-acm-creation-hangs/</link>
+      <pubDate>Fri, 22 Jul 2016 15:23:13 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/posts/20160722-cloudformation-acm-creation-hangs/</guid>
+      <description>Since (at present) you need to create your Amazon Certificate Manager generated SSL certificates for each AWS region in which you want to use them, I am testing out using CloudFormation to provision them for consistency across regions. On first running the stack creation live, I had a disconcerting moment at first when the template creation seemed to just hang. The reason turned out to be pretty simple, CloudFormation will wait until until the domain validations for all the entries listed in the certificate have been processed before completing stack creation.</description>
+    </item>
+    
+  </channel>
+</rss>

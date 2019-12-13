@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on stacyhorton.github.io</title>
+    <link>https://stacyhorton.github.io/tags/</link>
+    <description>Recent content in Tags on stacyhorton.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-au</language>
+    <lastBuildDate>Wed, 12 Sep 2018 17:03:10 +1000</lastBuildDate>
+    
+	<atom:link href="https://stacyhorton.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>aws</title>
+      <link>https://stacyhorton.github.io/tags/aws/</link>
+      <pubDate>Wed, 12 Sep 2018 17:03:10 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lambda</title>
+      <link>https://stacyhorton.github.io/tags/lambda/</link>
+      <pubDate>Wed, 12 Sep 2018 17:03:10 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/lambda/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>serverless</title>
+      <link>https://stacyhorton.github.io/tags/serverless/</link>
+      <pubDate>Wed, 12 Sep 2018 17:03:10 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/serverless/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>terraform</title>
+      <link>https://stacyhorton.github.io/tags/terraform/</link>
+      <pubDate>Wed, 12 Sep 2018 17:03:10 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/terraform/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>chrome</title>
+      <link>https://stacyhorton.github.io/tags/chrome/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/chrome/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>chrome-extensions</title>
+      <link>https://stacyhorton.github.io/tags/chrome-extensions/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/chrome-extensions/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://stacyhorton.github.io/tags/linux/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>privacy</title>
+      <link>https://stacyhorton.github.io/tags/privacy/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/privacy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>qol</title>
+      <link>https://stacyhorton.github.io/tags/qol/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/qol/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>socks5</title>
+      <link>https://stacyhorton.github.io/tags/socks5/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/socks5/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ssh</title>
+      <link>https://stacyhorton.github.io/tags/ssh/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/ssh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>acm</title>
+      <link>https://stacyhorton.github.io/tags/acm/</link>
+      <pubDate>Fri, 22 Jul 2016 15:23:13 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/acm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cloudformation</title>
+      <link>https://stacyhorton.github.io/tags/cloudformation/</link>
+      <pubDate>Fri, 22 Jul 2016 15:23:13 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/cloudformation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>troposphere</title>
+      <link>https://stacyhorton.github.io/tags/troposphere/</link>
+      <pubDate>Fri, 22 Jul 2016 15:23:13 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/troposphere/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fail</title>
+      <link>https://stacyhorton.github.io/tags/fail/</link>
+      <pubDate>Mon, 05 Jan 2015 13:45:40 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/fail/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>yum</title>
+      <link>https://stacyhorton.github.io/tags/yum/</link>
+      <pubDate>Mon, 05 Jan 2015 13:45:40 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/tags/yum/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

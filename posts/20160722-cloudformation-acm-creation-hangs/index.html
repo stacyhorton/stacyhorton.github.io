@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en-au">
+
+<head>
+<meta charset="utf-8" />
+<meta name="author" content="" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.60.1" />
+
+<link rel="canonical" href="https://stacyhorton.github.io/posts/20160722-cloudformation-acm-creation-hangs/">
+<meta property="og:title" content="Cloudformation ACM creation hangs" />
+<meta property="og:description" content="Since (at present) you need to create your Amazon Certificate Manager generated SSL certificates for each AWS region in which you want to use them, I am testing out using CloudFormation to provision them for consistency across regions. On first running the stack creation live, I had a disconcerting moment at first when the template creation seemed to just hang. The reason turned out to be pretty simple, CloudFormation will wait until until the domain validations for all the entries listed in the certificate have been processed before completing stack creation." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://stacyhorton.github.io/posts/20160722-cloudformation-acm-creation-hangs/" />
+<meta property="article:published_time" content="2016-07-22T15:23:13+10:00" />
+<meta property="article:modified_time" content="2016-07-22T15:23:13+10:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cloudformation ACM creation hangs"/>
+<meta name="twitter:description" content="Since (at present) you need to create your Amazon Certificate Manager generated SSL certificates for each AWS region in which you want to use them, I am testing out using CloudFormation to provision them for consistency across regions. On first running the stack creation live, I had a disconcerting moment at first when the template creation seemed to just hang. The reason turned out to be pretty simple, CloudFormation will wait until until the domain validations for all the entries listed in the certificate have been processed before completing stack creation."/>
+
+
+<meta itemprop="name" content="Cloudformation ACM creation hangs">
+<meta itemprop="description" content="Since (at present) you need to create your Amazon Certificate Manager generated SSL certificates for each AWS region in which you want to use them, I am testing out using CloudFormation to provision them for consistency across regions. On first running the stack creation live, I had a disconcerting moment at first when the template creation seemed to just hang. The reason turned out to be pretty simple, CloudFormation will wait until until the domain validations for all the entries listed in the certificate have been processed before completing stack creation.">
+<meta itemprop="datePublished" content="2016-07-22T15:23:13&#43;10:00" />
+<meta itemprop="dateModified" content="2016-07-22T15:23:13&#43;10:00" />
+<meta itemprop="wordCount" content="269">
+
+
+
+<meta itemprop="keywords" content="acm,aws,cloudformation,troposphere," />
+
+<link rel="stylesheet" href="../../css/layout.css" />
+
+
+<link rel="stylesheet" href="../../css/default-dark.css" />
+
+
+
+
+<title>
+
+
+     Cloudformation ACM creation hangs 
+
+</title>
+
+</head>
+
+
+<body>
+<div class="main">
+<header>
+
+<div class="header-bar">
+
+  <nav>
+    <div class="siteTitle">
+      <a href="https://stacyhorton.github.io/">stacyhorton.github.io</a>
+    </div> 
+
+    
+    
+
+  </nav>
+
+  
+<div class="social-links-header">
+
+  
+
+  
+  <a href="https://github.com/stacyhorton" target="_blank"><div class="social-link">gh</div></a>
+  
+
+  
+
+  
+
+  
+
+</div>
+
+
+</div>
+
+
+</header>
+
+
+<article class="post">
+    <h1 class="title"> Cloudformation ACM creation hangs </h1>
+    <div class="content"> <p>Since (at present) you need to create your Amazon Certificate Manager generated SSL certificates for each AWS region in which you want to use them, I am testing out using CloudFormation to provision them for consistency across regions. On first running the stack creation live, I had a disconcerting moment at first when the template creation seemed to just hang. The reason turned out to be pretty simple, CloudFormation will wait until until the domain validations for all the entries listed in the certificate have been processed before completing stack creation.</p>
+<p>In the interests of preventing someone else running through the same trial-and-error process I did, here is a simple YAML CloudFormation template to create a certificate, including how to handle the subdomains and DomainValidationOptions which is not very clear from the examples in the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-certificatemanager-certificate.html">documentation</a>:</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">Resources:
+  StarStarExampleComV1:
+    Properties:
+      DomainName: <span style="color:#e6db74">&#39;*.example.com&#39;</span>
+      DomainValidationOptions:
+      - { DomainName: <span style="color:#e6db74">&#39;*.staging.example.com&#39;</span>, ValidationDomain: example.com }
+      - { DomainName: <span style="color:#e6db74">&#39;*.testing.example.com&#39;</span>, ValidationDomain: example.com }
+      SubjectAlternativeNames: [ <span style="color:#e6db74">&#39;*.staging.example.com&#39;</span>, <span style="color:#e6db74">&#39;*.testing.example.com&#39;</span> ]
+      Tags:
+      - {Key: Name, Value: star.star.example.com}
+    Type: AWS::CertificateManager::Certificate
+</code></pre></td></tr></table>
+</div>
+</div><p>And since I roll that way, here is the <a href="https://github.com/cloudtools/troposphere">Troposphere</a>{:target=&rdquo;_blank&rdquo;} snippet used to create the above template:</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">SANs = [<span style="color:#e6db74">&#39;*.staging.example.com&#39;</span>, <span style="color:#e6db74">&#39;*.testing.example.com&#39;</span> ]
+DVOs = []
+
+for SAN in SANs:
+    DVOs.append(DomainValidationOption(
+        DomainName=SAN,
+        ValidationDomain=<span style="color:#e6db74">&#39;example.com&#39;</span>,
+    ))
+
+template.add_resource(
+    Certificate(
+        <span style="color:#e6db74">&#39;StarStarExampleComV1&#39;</span>,
+        DomainName=<span style="color:#e6db74">&#39;*.example.com&#39;</span>,
+        SubjectAlternativeNames=SANs,
+        DomainValidationOptions=DVOs,
+        Tags=[
+            {
+                <span style="color:#e6db74">&#39;Key&#39;</span>: <span style="color:#e6db74">&#39;Name&#39;</span>,
+                <span style="color:#e6db74">&#39;Value&#39;</span>: <span style="color:#e6db74">&#39;star.star.example.com&#39;</span>
+            },
+        ],
+    )
+)
+</code></pre></td></tr></table>
+</div>
+</div><p>It's unusual for the Troposhere version to be longer but it can happen in these simple cases.</p>
+ </div>
+    <footer class="post-footer">
+
+  <div class="post-footer-data">
+    
+<div class="tags">
+    
+      <div class="tag">
+        <a href="../../tags/acm">#acm</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/aws">#aws</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/cloudformation">#cloudformation</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/troposphere">#troposphere</a>
+      </div>
+    
+</div>
+
+    <div class="date"> 22 Jul 2016 </div>
+  </div>
+
+</footer>
+
+
+
+</article>
+
+  <footer>
+
+  <div class="social-links-footer">
+
+  
+
+  
+  <a href="https://github.com/stacyhorton" target="_blank"><div class="social-link">GitHub</div></a>
+  
+
+  
+
+  
+
+  
+
+  <div class="social-link">
+  <a href="https://stacyhorton.github.io/index.xml" target="_blank">RSS</a>
+  </div>
+
+</div>
+
+
+  <div class="copyright">  </div>
+
+  <div class="poweredby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>.
+  </div>
+
+  </footer>
+
+</div> 
+
+</body>
+</html>
+

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on stacyhorton.github.io</title>
+    <link>https://stacyhorton.github.io/categories/</link>
+    <description>Recent content in Categories on stacyhorton.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-au</language>
+    <lastBuildDate>Wed, 12 Sep 2018 17:03:10 +1000</lastBuildDate>
+    
+	<atom:link href="https://stacyhorton.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>devops</title>
+      <link>https://stacyhorton.github.io/categories/devops/</link>
+      <pubDate>Wed, 12 Sep 2018 17:03:10 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/categories/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>privacy</title>
+      <link>https://stacyhorton.github.io/categories/privacy/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/categories/privacy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>qol</title>
+      <link>https://stacyhorton.github.io/categories/qol/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/categories/qol/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tips</title>
+      <link>https://stacyhorton.github.io/categories/tips/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/categories/tips/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

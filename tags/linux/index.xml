@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on stacyhorton.github.io</title>
+    <link>https://stacyhorton.github.io/tags/linux/</link>
+    <description>Recent content in linux on stacyhorton.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-au</language>
+    <lastBuildDate>Sat, 18 Feb 2017 16:22:05 +1000</lastBuildDate>
+    
+	<atom:link href="https://stacyhorton.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Tunneling Chrome tabs via SSH</title>
+      <link>https://stacyhorton.github.io/posts/20170218-tunneling-chrome-tabs-via-ssh/</link>
+      <pubDate>Sat, 18 Feb 2017 16:22:05 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/posts/20170218-tunneling-chrome-tabs-via-ssh/</guid>
+      <description>The problem: you want to tunnel the traffic for only certain browser tabs over SSH because your work restricts access&amp;hellip; or you&#39;re doing something dodgy. I don&#39;t know, and I don&#39;t judge.
+The solution: get another job.
+The real solution: do this instead.
+Assumptions: You are running a Unix-like OS and have already configured a working SSH connection to your target host of choice. If not, go here.
+  Install Proxy Switchy Omega in Chrome from the Chrome Web Store.</description>
+    </item>
+    
+    <item>
+      <title>You had one job, Yum!</title>
+      <link>https://stacyhorton.github.io/posts/20150105-you-had-one-job-yum/</link>
+      <pubDate>Mon, 05 Jan 2015 13:45:40 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/posts/20150105-you-had-one-job-yum/</guid>
+      <description>The task: install a missing php extension (memcached) on a client&#39;s webserver.
+1 2 3 4 5 6 7 8 9 10 11 12 13  $ sudo yum install php54w-pecl-memcached Installing: php54w-pecl-memcached Installing for dependencies: libmemcached libmemcached10 Transaction check error: file /usr/bin/memcapable conflicts between attempted installs of libmemcached10-1.0.16-1.ius.el6.x86_64 and libmemcached-1.0.8-2.6.amzn1.x86_64 ... yum continues to vomit intensely ...   Hmm, okay&amp;hellip; let&#39;s try this:
+1 2 3 4 5 6  $ sudo yum install libmemcached10 Installed: libmemcached10.</description>
+    </item>
+    
+  </channel>
+</rss>
