@@ -14,7 +14,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://stacyhorton.github.io/tags/aws/" />
-<meta property="og:updated_time" content="2018-09-12T17:03:10+10:00" />
+<meta property="og:updated_time" content="2019-10-28T15:52:29+10:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="aws"/>
@@ -85,6 +85,57 @@
 <h2 class="term-list-title">
     <a href="https://stacyhorton.github.io/tags/aws/" class="linktopost">tag: aws</a>
 </h2>
+
+
+    <article class="post-preview">
+
+  <header>
+    <h2 class="title"> <a href='https://stacyhorton.github.io/posts/20191028-athena-partitions-silently-failing/'> Athena partitions silently failing</a> </h2>
+    <div class="meta">
+      <div class="date">
+      28 Oct, 2019 - 3 minutes
+      </div>
+      
+<div class="tags">
+    
+      <div class="tag">
+        <a href="../../tags/aws">#aws</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/athena">#athena</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/glue">#glue</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/s3">#s3</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/terraform">#terraform</a>
+      </div>
+    
+</div>
+
+    </div>
+
+  </header>
+
+  <div class="summary">
+    While setting up some partitioned data in S3 for Athena to query, I ran across an unusual error which I lost a lot of time tracking down so hopefully, this might help someone else.
+The data file contents were just simple JSON files, organised into a year/month/date heirachy in an S3 bucket:
+1 2 3 4 5  invoice/year=2019/month=10/day=01/20191001-001.json invoice/year=2019/month=10/day=01/20191001-002.json invoice/year=2019/month=10/day=01/20191001-003.json invoice/year=2019/month=10/day=01/20191001-004.json invoice/year=2019/month=10/day=01/20191001-005.json   My Glue data catalog was defined by Terraform:
+  </div>
+
+  <div class="rmore">
+    <a href='https://stacyhorton.github.io/posts/20191028-athena-partitions-silently-failing/' class="rmore">Read more</a>
+  </div>
+
+
+</article>
 
 
     <article class="post-preview">

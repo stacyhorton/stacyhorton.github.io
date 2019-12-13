@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>athena on stacyhorton.github.io</title>
+    <link>https://stacyhorton.github.io/tags/athena/</link>
+    <description>Recent content in athena on stacyhorton.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-au</language>
+    <lastBuildDate>Mon, 28 Oct 2019 15:52:29 +1000</lastBuildDate>
+    
+	<atom:link href="https://stacyhorton.github.io/tags/athena/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Athena partitions silently failing</title>
+      <link>https://stacyhorton.github.io/posts/20191028-athena-partitions-silently-failing/</link>
+      <pubDate>Mon, 28 Oct 2019 15:52:29 +1000</pubDate>
+      
+      <guid>https://stacyhorton.github.io/posts/20191028-athena-partitions-silently-failing/</guid>
+      <description>While setting up some partitioned data in S3 for Athena to query, I ran across an unusual error which I lost a lot of time tracking down so hopefully, this might help someone else.
+The data file contents were just simple JSON files, organised into a year/month/date heirachy in an S3 bucket:
+1 2 3 4 5  invoice/year=2019/month=10/day=01/20191001-001.json invoice/year=2019/month=10/day=01/20191001-002.json invoice/year=2019/month=10/day=01/20191001-003.json invoice/year=2019/month=10/day=01/20191001-004.json invoice/year=2019/month=10/day=01/20191001-005.json   My Glue data catalog was defined by Terraform:</description>
+    </item>
+    
+  </channel>
+</rss>

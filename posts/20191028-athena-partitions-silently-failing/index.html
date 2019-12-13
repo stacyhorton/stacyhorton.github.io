@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en-au">
+
+<head>
+<meta charset="utf-8" />
+<meta name="author" content="" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.60.1" />
+
+<link rel="canonical" href="https://stacyhorton.github.io/posts/20191028-athena-partitions-silently-failing/">
+<meta property="og:title" content="Athena partitions silently failing" />
+<meta property="og:description" content="While setting up some partitioned data in S3 for Athena to query, I ran across an unusual error which I lost a lot of time tracking down so hopefully, this might help someone else.
+The data file contents were just simple JSON files, organised into a year/month/date heirachy in an S3 bucket:
+1 2 3 4 5  invoice/year=2019/month=10/day=01/20191001-001.json invoice/year=2019/month=10/day=01/20191001-002.json invoice/year=2019/month=10/day=01/20191001-003.json invoice/year=2019/month=10/day=01/20191001-004.json invoice/year=2019/month=10/day=01/20191001-005.json   My Glue data catalog was defined by Terraform:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://stacyhorton.github.io/posts/20191028-athena-partitions-silently-failing/" />
+<meta property="article:published_time" content="2019-10-28T15:52:29+10:00" />
+<meta property="article:modified_time" content="2019-10-28T15:52:29+10:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Athena partitions silently failing"/>
+<meta name="twitter:description" content="While setting up some partitioned data in S3 for Athena to query, I ran across an unusual error which I lost a lot of time tracking down so hopefully, this might help someone else.
+The data file contents were just simple JSON files, organised into a year/month/date heirachy in an S3 bucket:
+1 2 3 4 5  invoice/year=2019/month=10/day=01/20191001-001.json invoice/year=2019/month=10/day=01/20191001-002.json invoice/year=2019/month=10/day=01/20191001-003.json invoice/year=2019/month=10/day=01/20191001-004.json invoice/year=2019/month=10/day=01/20191001-005.json   My Glue data catalog was defined by Terraform:"/>
+
+
+<meta itemprop="name" content="Athena partitions silently failing">
+<meta itemprop="description" content="While setting up some partitioned data in S3 for Athena to query, I ran across an unusual error which I lost a lot of time tracking down so hopefully, this might help someone else.
+The data file contents were just simple JSON files, organised into a year/month/date heirachy in an S3 bucket:
+1 2 3 4 5  invoice/year=2019/month=10/day=01/20191001-001.json invoice/year=2019/month=10/day=01/20191001-002.json invoice/year=2019/month=10/day=01/20191001-003.json invoice/year=2019/month=10/day=01/20191001-004.json invoice/year=2019/month=10/day=01/20191001-005.json   My Glue data catalog was defined by Terraform:">
+<meta itemprop="datePublished" content="2019-10-28T15:52:29&#43;10:00" />
+<meta itemprop="dateModified" content="2019-10-28T15:52:29&#43;10:00" />
+<meta itemprop="wordCount" content="444">
+
+
+
+<meta itemprop="keywords" content="aws,athena,glue,s3,terraform," />
+
+<link rel="stylesheet" href="../../css/layout.css" />
+
+
+<link rel="stylesheet" href="../../css/default-dark.css" />
+
+
+
+
+<title>
+
+
+     Athena partitions silently failing 
+
+</title>
+
+</head>
+
+
+<body>
+<div class="main">
+<header>
+
+<div class="header-bar">
+
+  <nav>
+    <div class="siteTitle">
+      <a href="https://stacyhorton.github.io/">stacyhorton.github.io</a>
+    </div> 
+
+    
+    
+
+  </nav>
+
+  
+<div class="social-links-header">
+
+  
+
+  
+  <a href="https://github.com/stacyhorton" target="_blank"><div class="social-link">gh</div></a>
+  
+
+  
+
+  
+
+  
+
+</div>
+
+
+</div>
+
+
+</header>
+
+
+<article class="post">
+    <h1 class="title"> Athena partitions silently failing </h1>
+    <div class="content"> <p>While setting up some partitioned data in S3 for Athena to query, I ran across an unusual error which I lost a lot of time tracking down so hopefully, this might help someone else.</p>
+<p>The data file contents were just simple JSON files, organised into a year/month/date heirachy in an S3 bucket:</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">invoice/year=2019/month=10/day=01/20191001-001.json
+invoice/year=2019/month=10/day=01/20191001-002.json
+invoice/year=2019/month=10/day=01/20191001-003.json
+invoice/year=2019/month=10/day=01/20191001-004.json
+invoice/year=2019/month=10/day=01/20191001-005.json
+</code></pre></td></tr></table>
+</div>
+</div><p>My Glue data catalog was defined by Terraform:</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-terraform" data-lang="terraform"><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">s</span> {
+
+<span style="color:#a6e22e">  env</span> <span style="color:#f92672">=</span><span style="color:#a6e22e"> &#34;${terraform.workspace</span> <span style="color:#f92672">=</span><span style="color:#a6e22e"></span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;default&#34; ? &#34;testing&#34; : terraform.workspace}&#34;</span>
+
+<span style="color:#a6e22e">  s3_bucket_name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;${var.project}-datastore-${local.env}&#34;</span>
+
+<span style="color:#a6e22e">  prefix</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;${var.project}-${local.env}&#34;</span>
+
+}
+
+
+<span style="color:#66d9ef">resource</span> <span style="color:#e6db74">&#34;aws_glue_catalog_database&#34; &#34;datastore&#34;</span> {
+<span style="color:#a6e22e">  name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;datastore_${local.env}&#34;</span>
+}
+
+
+<span style="color:#66d9ef">resource</span> <span style="color:#e6db74">&#34;aws_glue_catalog_table&#34; &#34;partitioned_invoice&#34;</span> {
+
+<span style="color:#a6e22e">  database_name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;${aws_glue_catalog_database.datastore.name}&#34;</span>
+<span style="color:#a6e22e">  name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;invoice&#34;</span>
+<span style="color:#a6e22e">  table_type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;EXTERNAL_TABLE&#34;</span>
+
+<span style="color:#a6e22e">  parameters</span> <span style="color:#f92672">=</span> {
+<span style="color:#a6e22e">    &#34;classification&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;json&#34;</span>
+  }
+
+  <span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">k</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">    name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;year&#34;</span>
+  }
+
+  <span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">k</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">    name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;month&#34;</span>
+  }
+
+  <span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">k</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">    name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;day&#34;</span>
+  }
+
+  <span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">g</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">r</span> {
+<span style="color:#a6e22e">    compressed</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>
+<span style="color:#a6e22e">    location</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;s3://${local.s3_bucket_name}/partitioned/invoice/&#34;</span>
+<span style="color:#a6e22e">    input_format</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;org.apache.hadoop.mapred.TextInputFormat&#34;</span>
+<span style="color:#a6e22e">    output_format</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat&#34;</span>
+
+    <span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">f</span><span style="color:#960050;background-color:#1e0010">o</span> {
+<span style="color:#a6e22e">      name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;JsonSerDe&#34;</span>
+<span style="color:#a6e22e">      serialization_library</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;org.openx.data.jsonserde.JsonSerDe&#34;</span>
+    }
+
+    <span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">      name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;id&#34;</span>
+<span style="color:#a6e22e">      type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;int&#34;</span>
+    }
+    <span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">      name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;accountid&#34;</span>
+<span style="color:#a6e22e">      type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;int&#34;</span>
+    }
+    <span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">      name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;status&#34;</span>
+<span style="color:#a6e22e">      type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;string&#34;</span>
+    }
+    <span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">      name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;createdat&#34;</span>
+<span style="color:#a6e22e">      type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;timestamp&#34;</span>
+    }
+    <span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">      name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;updatedat&#34;</span>
+<span style="color:#a6e22e">      type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;timestamp&#34;</span>
+    }
+  }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>The same config worked fine before I declared and discovered the partitions but afterwards, querying the data always resulted in Athena just&hellip; sitting there for a while and eventually giving an unhelpful error message:</p>
+<pre><code>I need to find that error message text again  :)
+</code></pre><p>Long story short (too late), it turned out to be the <code>aws_glue_catalog_table.partition_keys</code>, which are practically <a href="https://www.terraform.io/docs/providers/aws/r/glue_catalog_table.html#partition_keys">undocumented</a> at the time of writing, require a <code>type</code> to be specified or else they default to <code>string</code> which just&hellip; doesn't work.</p>
+<p>So adding a <code>type</code> parameter to the Terraform:</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-terraform" data-lang="terraform">  <span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">k</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">    name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;year&#34;</span>
+<span style="color:#a6e22e">    type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;int&#34;</span>
+  }
+
+  <span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">k</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">    name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;month&#34;</span>
+<span style="color:#a6e22e">    type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;int&#34;</span>
+  }
+
+  <span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">k</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">s</span> {
+<span style="color:#a6e22e">    name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;day&#34;</span>
+<span style="color:#a6e22e">    type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;int&#34;</span>
+  }
+</code></pre></td></tr></table>
+</div>
+</div><p>and re-discovering partitions using:</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">msck repair <span style="color:#66d9ef">table</span> invoice;
+</code></pre></td></tr></table>
+</div>
+</div><p>got the queries working again.</p>
+<p>Hopefully this post will save someone debugging time on this issue or at least serve as an example of how to define Glue/Athena tables using Terraform.</p>
+ </div>
+    <footer class="post-footer">
+
+  <div class="post-footer-data">
+    
+<div class="tags">
+    
+      <div class="tag">
+        <a href="../../tags/aws">#aws</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/athena">#athena</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/glue">#glue</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/s3">#s3</a>
+      </div>
+    
+      <div class="tag">
+        <a href="../../tags/terraform">#terraform</a>
+      </div>
+    
+</div>
+
+    <div class="date"> 28 Oct 2019 </div>
+  </div>
+
+</footer>
+
+
+
+</article>
+
+  <footer>
+
+  <div class="social-links-footer">
+
+  
+
+  
+  <a href="https://github.com/stacyhorton" target="_blank"><div class="social-link">GitHub</div></a>
+  
+
+  
+
+  
+
+  
+
+  <div class="social-link">
+  <a href="https://stacyhorton.github.io/index.xml" target="_blank">RSS</a>
+  </div>
+
+</div>
+
+
+  <div class="copyright">  </div>
+
+  <div class="poweredby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>.
+  </div>
+
+  </footer>
+
+</div> 
+
+</body>
+</html>
+
